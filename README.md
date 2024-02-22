@@ -20,7 +20,8 @@ Fast Python Mail (FPM) is a simple Python script that allows you to send emails 
     cd Fast-Python-Mail
     ```
 
-3. **Edit the `FPM.py` script and insert your personal Google email address and password. Ensure to use a secure one.
+3. **Edit the `FPM.py` script and insert your personal Google email address and password.
+Ensure to use a secure one.
 (Use APP password by Google)**
 
 4. **Place the script file (`FPM.py`) in the directory where you have your attachments to send.**
