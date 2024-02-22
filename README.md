@@ -33,7 +33,7 @@ Fast Python Mail (FPM) is a simple Python script that allows you to send emails 
 
 ## Author
 
-🇮🇹 Antonio Borriello - [Website](https://antonioboriello.wordpress.com)
+🇮🇹   Antonio Borriello - [Website](https://antonioboriello.wordpress.com)
 
 ## License
 
