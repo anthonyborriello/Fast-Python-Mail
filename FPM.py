@@ -2,7 +2,7 @@
 Fast Python Mail is a simple Python script for sending emails with attachments quickly and easily. It can be used in your non-commercial projects.
 Place this file in the folder where you need to send emails from.
 
-Author: 🇮🇹 Antonio Borriello - antonioboriello.wordpress.com
+Author: 🇮🇹   Antonio Borriello - antonioboriello.wordpress.com
 
 This script is distributed under the MIT License. Feel free to use, modify, and distribute this script according to the terms of the MIT License. See the LICENSE file for more details.
 """
