@@ -16,7 +16,7 @@ from email import encoders
 
 def send_email(recipient, subject, body, attachments):
     # Configure SMTP server details
-    smtp_server = 'smtp.gmail.com' # <-- If you're using a different email provider, replace this with your provider's SMTP address
+    smtp_server = 'smtp.gmail.com' # <-- If you are not using gmail, replace this with your provider's SMTP address
     smtp_port = 465
     smtp_username = 'your mail address' # <-- Add you email address here
     smtp_password = 'your password' # <-- Add your password here
