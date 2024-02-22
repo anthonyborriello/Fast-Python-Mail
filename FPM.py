@@ -18,8 +18,8 @@ def send_email(recipient, subject, body, attachments):
     # Configure SMTP server details
     smtp_server = 'smtp.gmail.com'
     smtp_port = 465
-    smtp_username = 'your mail address'
-    smtp_password = 'your password'
+    smtp_username = 'your mail address' # <-- Add you email address here
+    smtp_password = 'your password' # <-- Add your password here
 
     # Create message object
     msg = MIMEMultipart()
