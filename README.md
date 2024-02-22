@@ -34,7 +34,7 @@ Ensure to use a secure one. (Use APP password)**
 
 ## Author
 
-🇮🇹   Antonio Borriello - [Website](https://antonioboriello.wordpress.com)
+🇮🇹   Antonio Borriello - [Website](https://antonioborriello.wordpress.com)
 
 ## License
 
