@@ -45,9 +45,11 @@ Once you've selected all desired files, press Enter to proceed.
 
 **Common SMTP Servers:**
 
-Gmail: smtp.gmail.com Port: 465
-Hotmail: pod51000.outlook.com 587
-Yahoo: smtp.mail.yahoo.com 465
+- Gmail: `smtp.gmail.com` Port: 465 (SSL)
+- Hotmail/Outlook: `smtp.office365.com` Port: 587 (STARTTLS)
+- Yahoo: `smtp.mail.yahoo.com` Port: 465 (SSL)
+- AOL: `smtp.aol.com` Port: 587 (STARTTLS)
+- iCloud: `smtp.mail.me.com` Port: 587 (STARTTLS)
 
 ## Author
 
