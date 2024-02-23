@@ -46,6 +46,8 @@ Once you've selected all desired files, press Enter to proceed.
 **Common SMTP Servers:**
 
 Gmail: smtp.gmail.com Port: 465
+Hotmail: pod51000.outlook.com 587
+Yahoo: smtp.mail.yahoo.com 465
 
 ## Author
 
