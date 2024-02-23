@@ -45,11 +45,15 @@ Once you've selected all desired files, press Enter to proceed.
 
 **Common SMTP Servers:**
 
-- Gmail: `smtp.gmail.com` Port: 465 (SSL)
-- Hotmail/Outlook: `smtp.office365.com` Port: 587 (STARTTLS)
-- Yahoo: `smtp.mail.yahoo.com` Port: 465 (SSL)
-- AOL: `smtp.aol.com` Port: 587 (STARTTLS)
-- iCloud: `smtp.mail.me.com` Port: 587 (STARTTLS)
+- Gmail: `smtp.gmail.com` Port: 465 (SSL)  
+  *Requires an App Password for authentication.*
+- Hotmail/Outlook: `smtp.office365.com` Port: 587 (STARTTLS)  
+- Yahoo: `smtp.mail.yahoo.com` Port: 465 (SSL)  
+  *Requires an App Password for authentication.*
+- AOL: `smtp.aol.com` Port: 587 (STARTTLS)  
+  *Requires an App Password for authentication.*
+- iCloud: `smtp.mail.me.com` Port: 587 (STARTTLS)  
+  *Requires an App Password for authentication.*
 
 ## Author
 
