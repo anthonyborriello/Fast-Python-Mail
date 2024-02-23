@@ -48,15 +48,21 @@ def is_valid_email(email):
 def send_email(nickname, recipient, subject, body, attachments):
     config = read_config()
     smtp_server = config['smtp_server']
-    smtp_port = config['smtp_port']
+    smtp_port = int(config['smtp_port'])
     username = config['username']
     password = config['password']
 
     msg = create_message(nickname, username, recipient, subject, body, attachments)
 
-    with smtplib.SMTP_SSL(smtp_server, smtp_port) as server:
-        server.login(username, password)
-        server.sendmail(username, recipient, msg.as_string())
+    if smtp_port == 465:
+        server = smtplib.SMTP_SSL(smtp_server, smtp_port)
+    else:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+
+    server.login(username, password)
+    server.sendmail(username, recipient, msg.as_string())
+    server.quit()
 
 def create_message(nickname, sender, recipient, subject, body, attachments):
     msg = MIMEMultipart()
@@ -143,7 +149,7 @@ def main():
     attachments = []
 
     if attach_files in ['yes', 'y']:
-        root_path = os.path.expanduser("~")  
+        root_path = os.path.expanduser("~")
         selected_files = navigate_folders(root_path)
         attachments.extend(selected_files)
 
@@ -156,3 +162,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
