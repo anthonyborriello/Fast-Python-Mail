@@ -1,6 +1,6 @@
-# Fast Python Mail (FPM)
+# Fast Python Mail (fpmail)
 
-Fast Python Mail (FPM) is a simple Python script designed to swiftly send emails with attachments. It offers a hassle-free solution for sending emails and is well-suited for non-commercial projects, making it ideal for personal or small-scale use.
+Fast Python Mail (fpmail) is a simple Python script designed to swiftly send emails with attachments. It offers a hassle-free solution for sending emails and is well-suited for non-commercial projects, making it ideal for personal or small-scale use.
 
 ## Features
 
