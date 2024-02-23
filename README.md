@@ -30,7 +30,8 @@ Fast Python Mail (fpmail) is a simple Python script designed to swiftly send ema
     ```bash
     python fpmail.py
     ```
-**To select multiple files for attachments:**
+**Nickname selection:**
+
 You have the option to skip selecting a nickname.<br>If left blank, the recipient will see your email address instead of a nickname in the email header.
 
 
