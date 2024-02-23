@@ -19,13 +19,11 @@ CONFIG_FILE = 'config.json'
 
 def create_config():
     config = {
-        'smtp_server': 'smtp.gmail.com',
-        'smtp_port': 465,
         'username': '',
         'password': '',
         'nickname': ''
     }
-
+    
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f)
 
@@ -52,8 +50,8 @@ def is_valid_email(email):
 
 def send_email(nickname, recipient, subject, body, attachments):
     config = read_config()
-    smtp_server = config['smtp_server']
-    smtp_port = config['smtp_port']
+    smtp_server = config.get('smtp_server', '')
+    smtp_port = config.get('smtp_port', 465)
     username = config['username']
     password = config['password']
 
@@ -145,7 +143,7 @@ def main():
     body = input("Enter the email body: ")
 
     # Check if the user's email provider is not Gmail
-    if not config['username'].endswith('@gmail.com'):
+    if not config['username'].endswith('@gmail.com') and (not config.get('smtp_server') or not config.get('smtp_port')):
         print("Your provider is not Gmail.")
         smtp_server = input("Enter your SMTP server address: ")
         smtp_port = input("Enter your SMTP port: ")
@@ -171,4 +169,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
