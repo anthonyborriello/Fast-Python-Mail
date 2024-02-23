@@ -8,19 +8,19 @@ This script is distributed under the MIT License. Feel free to use, modify, and 
 
 import os
 import smtplib
+import json
+import re
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-import json
-import re
 
 CONFIG_FILE = 'config.json'
 
 def create_config():
     config = {
-        'smtp_server': 'smtp.gmail.com',
-        'smtp_port': 465,
+        'smtp_server': "",
+        'smtp_port': "",
         'username': '',
         'password': '',
         'nickname': ''
@@ -42,13 +42,8 @@ def save_config(config):
         json.dump(config, f)
 
 def is_valid_email(email):
-    # Pattern per l'indirizzo email
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-    # Verifica se l'indirizzo email corrisponde al pattern
-    if re.match(pattern, email):
-        return True
-    else:
-        return False
+    return bool(re.match(pattern, email))
 
 def send_email(nickname, recipient, subject, body, attachments):
     config = read_config()
@@ -83,7 +78,7 @@ def create_message(nickname, sender, recipient, subject, body, attachments):
 
 def navigate_folders(current_path):
     RESET = '\033[0m'
-    FOLDER_COLOR = '\033[94m'  # Folders are colored
+    FOLDER_COLOR = '\033[94m'
 
     while True:
         print("\nCurrent path:", current_path)
@@ -108,7 +103,7 @@ def navigate_folders(current_path):
             if os.path.isdir(full_path):
                 current_path = full_path
             else:
-                return [full_path]  # Return a list with the selected file path
+                return [full_path]
         else:
             file_selections = choice.split()
             selected_files = []
@@ -126,14 +121,13 @@ def navigate_folders(current_path):
 def main():
     config = read_config()
 
-    if not config['username'] or not config['password']:
+    if not config['smtp_server'] or not config['smtp_port']:
         print("Let's add a new address!")
         config['username'] = input("Enter your email: ")
         config['password'] = input("Enter your password: ")
-        save_config(config)
-
-    if not config['nickname']:
         config['nickname'] = input("Enter your nickname for the sender's name (case sensitive): ")
+        config['smtp_server'] = input("Enter your SMTP server address: ")
+        config['smtp_port'] = input("Enter your SMTP port: ")
         save_config(config)
 
     recipient = input("Enter the recipient's email address: ")
@@ -144,21 +138,12 @@ def main():
     subject = input("Enter the email subject: ")
     body = input("Enter the email body: ")
 
-    # Check if the user's email provider is not Gmail
-    if not config['username'].endswith('@gmail.com'):
-        print("Your provider is not Gmail.")
-        smtp_server = input("Enter your SMTP server address: ")
-        smtp_port = input("Enter your SMTP port: ")
-        config['smtp_server'] = smtp_server
-        config['smtp_port'] = smtp_port
-        save_config(config)
-
     attach_files = input("Do you want to attach any file? (yes/no): ").lower()
 
     attachments = []
 
     if attach_files in ['yes', 'y']:
-        root_path = os.path.expanduser("~")  # Home directory
+        root_path = os.path.expanduser("~")  
         selected_files = navigate_folders(root_path)
         attachments.extend(selected_files)
 
