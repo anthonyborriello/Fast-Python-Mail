@@ -127,8 +127,8 @@ def main():
     config = read_config()
 
     if not config['username'] or not config['password']:
-        print("Let's add a new email address!")
-        config['username'] = input("Enter your email address: ")
+        print("Let's add a new address!")
+        config['username'] = input("Enter your email: ")
         config['password'] = input("Enter your password: ")
         save_config(config)
 
