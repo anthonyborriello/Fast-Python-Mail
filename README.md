@@ -27,7 +27,7 @@ In case of GMail, ensure to use an Application-specific password.**
 
 5. **Run the script:**
     ```bash
-    python FPM.py
+    python fpm.py
     ```
 
 6. **Follow the prompts to compose and send your email.**
