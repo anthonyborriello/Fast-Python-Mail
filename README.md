@@ -8,6 +8,8 @@ Fast Python Mail (FPM) is a simple Python script designed to swiftly send emails
 - Simple and intuitive to use.
 - Customizable to suit your specific requirements.
 - Ability to handle various email providers, not limited to Gmail.
+- Automatically configures itself on first run, prompting the user to input necessary information, and creates a JSON file (`config.json`) to store all configurations.
+- Allows selection of multiple files for sending attachments and enables navigation through the system's folders, starting from the home directory.
 
 ## Usage
 
