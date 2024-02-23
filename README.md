@@ -31,7 +31,14 @@ Fast Python Mail (fpmail) is a simple Python script designed to swiftly send ema
     python fpmail.py
     ```
 
-5. **Follow the prompts to compose and send your email.**
+5. **To select multiple files for attachments:**
+
+When prompted, enter "yes" or "y" to attach files.
+You will be prompted to navigate through the system's folders starting from the home directory.
+Use the numbers provided to select folders or files.
+To select multiple files, you can enter numbers separated by spaces (e.g., "1 3 5").
+To select a range of files, you can use hyphens (e.g., "1-3" selects files 1, 2, and 3).
+Once you've selected all desired files, press Enter to proceed.
 
 ## Author
 
