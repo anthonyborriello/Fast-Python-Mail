@@ -214,11 +214,16 @@ def main():
         selected_files = navigate_folders(root_path)
         attachments.extend(selected_files)
 
+    if attachments:
+        print("Sending email with attachments...")
+    else:
+        print("Sending email...")
+
     send_email(config['nickname'], recipient, subject, body, attachments)
     if attachments:
         print("Email sent successfully with attachments!")
     else:
-        print("Email sent successfully without attachments!")
+        print("Email sent successfully!")
 
 def print_logo():
     logo = """
