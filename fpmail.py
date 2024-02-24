@@ -1,29 +1,9 @@
-def print_logo():
-    logo = """
-   __                       _ _ 
-  / _|                     (_) |
- | |_ _ __  _ __ ___   __ _ _| |
- |  _| '_ \| '_ ` _ \ / _` | | |
- | | | |_) | | | | | | (_| | | |
- |_| | .__/|_| |_| |_|\__,_|_|_|
-     | |                        
-     |_|                        
-    \n"""
-    print(logo)
-    print("""Send messages with attachments quickly and easily""")
-
-"""
-Fast Python Mail is a simple Python script for sending emails with attachments quickly and easily. It can be used in your non-commercial projects.
-
-Author: 🇮🇹   Antonio Borriello - https://antonioboriello.wordpress.com
-
-This script is distributed under the MIT License. Feel free to use, modify, and distribute this script according to the terms of the MIT License. See the LICENSE file for more details.
-"""
-
 import os
 import smtplib
 import json
 import re
+import requests
+import xml.etree.ElementTree as ET
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -31,6 +11,37 @@ from email import encoders
 
 CONFIG_FILE = 'config.json'
 
+# Function to get SMTP information from an email domain
+def get_smtp_info(domain):
+    url = f"https://autoconfig.thunderbird.net/v1.1/{domain}"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            smtp_info = parse_xml(response.content)
+            return smtp_info
+        else:
+            print("Failed to fetch SMTP information.")
+            return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+# Function to parse XML content and get SMTP information
+def parse_xml(xml_content):
+    try:
+        root = ET.fromstring(xml_content)
+        smtp_servers = []
+        for server in root.findall('.//outgoingServer'):
+            hostname = server.find('hostname').text
+            port = int(server.find('port').text)
+            security = server.find('socketType').text
+            smtp_servers.append({'hostname': hostname, 'port': port, 'security': security})
+        return smtp_servers
+    except Exception as e:
+        print(f"An error occurred while parsing XML: {e}")
+        return None
+
+# Configuration handling functions
 def create_config():
     config = {
         'smtp_server': "",
@@ -55,28 +66,10 @@ def save_config(config):
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f)
 
+# Other utility functions
 def is_valid_email(email):
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return bool(re.match(pattern, email))
-
-def send_email(nickname, recipient, subject, body, attachments):
-    config = read_config()
-    smtp_server = config['smtp_server']
-    smtp_port = int(config['smtp_port'])
-    username = config['username']
-    password = config['password']
-
-    msg = create_message(nickname, username, recipient, subject, body, attachments)
-
-    if smtp_port == 465:
-        server = smtplib.SMTP_SSL(smtp_server, smtp_port)
-    else:
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-
-    server.login(username, password)
-    server.sendmail(username, recipient, msg.as_string())
-    server.quit()
 
 def create_message(nickname, sender, recipient, subject, body, attachments):
     msg = MIMEMultipart()
@@ -95,6 +88,25 @@ def create_message(nickname, sender, recipient, subject, body, attachments):
         msg.attach(part)
 
     return msg
+
+def send_email(nickname, recipient, subject, body, attachments):
+    config = read_config()
+    sender = config['username']
+    password = config['password']
+    smtp_server = config['smtp_server']
+    smtp_port = int(config['smtp_port'])
+
+    msg = create_message(nickname, sender, recipient, subject, body, attachments)
+
+    if smtp_port == 465:
+        server = smtplib.SMTP_SSL(smtp_server, smtp_port)
+    else:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+
+    server.login(sender, password)
+    server.sendmail(sender, recipient, msg.as_string())
+    server.quit()
 
 def navigate_folders(current_path):
     RESET = '\033[0m'
@@ -147,9 +159,21 @@ def main():
         config['username'] = input("Enter your email: ")
         config['password'] = input("Enter your password: ")
         config['nickname'] = input("Enter your nickname for the sender's name (case sensitive): ")
-        config['smtp_server'] = input("Enter your SMTP server address: ")
-        config['smtp_port'] = input("Enter your SMTP port: ")
-        save_config(config)
+
+        domain = config['username'].split('@')[-1]
+        smtp_info = get_smtp_info(domain)
+        if smtp_info:
+            print("SMTP Information:")
+            server = smtp_info[0]
+            print(f"Hostname: {server['hostname']}, Port: {server['port']}, Security: {server['security']}")
+            config['smtp_server'] = server['hostname']
+            config['smtp_port'] = server['port']
+            save_config(config)
+        else:
+            print("SMTP information not found. You need to provide SMTP details manually.")
+            config['smtp_server'] = input("Enter your SMTP server address: ")
+            config['smtp_port'] = input("Enter your SMTP port: ")
+            save_config(config)
 
     recipient = input("Enter the recipient's email address: ")
     while not is_valid_email(recipient):
@@ -175,6 +199,19 @@ def main():
         send_email(config['nickname'], recipient, subject, body, [])
         print("Email sent successfully without attachments!")
 
+def print_logo():
+    logo = """
+   __                       _ _
+  / _|                     (_) |
+ | |_ _ __  _ __ ___   __ _ _| |
+ |  _| '_ \| '_ ` _ \ / _` | | |
+ | | | |_) | | | | | | (_| | | |
+ |_| | .__/|_| |_| |_|\__,_|_|_|
+     | |
+     |_|
+    \n"""
+    print(logo)
+    print("""Send messages with attachments quickly and easily""")
+
 if __name__ == "__main__":
     main()
-    
