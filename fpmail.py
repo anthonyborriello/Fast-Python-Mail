@@ -178,7 +178,7 @@ def main():
             if is_valid_email(config['username']):
                 break
             else:
-                print("Invalid email address. Please enter a valid email address.")
+                print("Invalid email address. Please enter a valid one.")
 
         config['password'] = input("Enter your password: ")
         config['nickname'] = input("Enter your nickname for the sender's name (case sensitive): ")
@@ -199,7 +199,7 @@ def main():
 
     recipient = input("Enter the recipient's email address: ")
     while not is_valid_email(recipient):
-        print("Invalid email address. Please enter a valid email address.")
+        print("Invalid email address. Please enter a valid one.")
         recipient = input("Enter the recipient's email address: ")
 
     subject = input("Enter the email subject: ")
