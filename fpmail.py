@@ -1,3 +1,17 @@
+def print_logo():
+    logo = """
+   __                       _ _ 
+  / _|                     (_) |
+ | |_ _ __  _ __ ___   __ _ _| |
+ |  _| '_ \| '_ ` _ \ / _` | | |
+ | | | |_) | | | | | | (_| | | |
+ |_| | .__/|_| |_| |_|\__,_|_|_|
+     | |                        
+     |_|                        
+    \n"""
+    print(logo)
+    print("""Send messages with attachments quickly and easily""")
+
 """
 Fast Python Mail is a simple Python script for sending emails with attachments quickly and easily. It can be used in your non-commercial projects.
 
@@ -125,6 +139,7 @@ def navigate_folders(current_path):
             return selected_paths
 
 def main():
+    print_logo()
     config = read_config()
 
     if not config['smtp_server'] or not config['smtp_port']:
