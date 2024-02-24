@@ -1,3 +1,11 @@
+"""
+Fast Python Mail is a simple Python script for sending emails with attachments quickly and easily. It can be used in your non-commercial projects.
+
+Author: 🇮🇹   Antonio Borriello - https://antonioboriello.wordpress.com
+
+This script is distributed under the MIT License. Feel free to use, modify, and distribute this script according to the terms of the MIT License. See the LICENSE file for more details.
+"""
+
 import os
 import smtplib
 import json
@@ -11,22 +19,33 @@ from email import encoders
 
 CONFIG_FILE = 'config.json'
 
-# Function to get SMTP information from an email domain
-def get_smtp_info(domain):
-    url = f"https://autoconfig.thunderbird.net/v1.1/{domain}"
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            smtp_info = parse_xml(response.content)
-            return smtp_info
-        else:
-            print("Failed to fetch SMTP information.")
-            return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
+def get_domain_from_email(email):
+    match = re.match(r".*@(.+)$", email)
+    if match:
+        return match.group(1)
+    else:
+        print("Invalid email address.")
         return None
 
-# Function to parse XML content and get SMTP information
+def get_smtp_info_autoconfig(email):
+    domain = get_domain_from_email(email)
+    if domain:
+        url1 = f'https://autoconfig.thunderbird.net/v1.1/{domain}'
+        url2 = f'http://autoconfig.{domain}/mail/config-v1.1.xml?emailaddress={email}'
+
+        urls = [url1, url2]
+
+        for url in urls:
+            try:
+                response = requests.get(url)
+                if response.status_code == 200:
+                    return parse_xml(response.content)
+            except Exception as e:
+                print(f"An error occurred: {e}")
+    
+        print("Failed to fetch SMTP information.")
+        return None
+
 def parse_xml(xml_content):
     try:
         root = ET.fromstring(xml_content)
@@ -41,7 +60,6 @@ def parse_xml(xml_content):
         print(f"An error occurred while parsing XML: {e}")
         return None
 
-# Configuration handling functions
 def create_config():
     config = {
         'smtp_server': "",
@@ -66,7 +84,6 @@ def save_config(config):
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f)
 
-# Other utility functions
 def is_valid_email(email):
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return bool(re.match(pattern, email))
@@ -160,8 +177,7 @@ def main():
         config['password'] = input("Enter your password: ")
         config['nickname'] = input("Enter your nickname for the sender's name (case sensitive): ")
 
-        domain = config['username'].split('@')[-1]
-        smtp_info = get_smtp_info(domain)
+        smtp_info = get_smtp_info_autoconfig(config['username'])
         if smtp_info:
             print("SMTP Information:")
             server = smtp_info[0]
@@ -215,3 +231,4 @@ def print_logo():
 
 if __name__ == "__main__":
     main()
+
