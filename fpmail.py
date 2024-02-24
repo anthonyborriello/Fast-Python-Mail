@@ -173,7 +173,13 @@ def main():
 
     if not config['smtp_server'] or not config['smtp_port']:
         print("Let's add a new address!")
-        config['username'] = input("Enter your email: ")
+        while True:
+            config['username'] = input("Enter your email: ")
+            if is_valid_email(config['username']):
+                break
+            else:
+                print("Invalid email address. Please enter a valid email address.")
+
         config['password'] = input("Enter your password: ")
         config['nickname'] = input("Enter your nickname for the sender's name (case sensitive): ")
 
@@ -208,11 +214,10 @@ def main():
         selected_files = navigate_folders(root_path)
         attachments.extend(selected_files)
 
-    if attachments or attach_files in ['no', 'n']:
-        send_email(config['nickname'], recipient, subject, body, attachments)
-        print("Email sent successfully!")
+    send_email(config['nickname'], recipient, subject, body, attachments)
+    if attachments:
+        print("Email sent successfully with attachments!")
     else:
-        send_email(config['nickname'], recipient, subject, body, [])
         print("Email sent successfully without attachments!")
 
 def print_logo():
@@ -231,4 +236,3 @@ def print_logo():
 
 if __name__ == "__main__":
     main()
-
