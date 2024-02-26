@@ -175,7 +175,7 @@ def navigate_folders(current_path):
 def main():
     clear_screen()  
     
-    while True:  # Aggiungi un ciclo che continua fino a quando l'utente decide di uscire
+    while True:
         config = read_config()
 
         if not config['smtp_server'] or not config['smtp_port']:
