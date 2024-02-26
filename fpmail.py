@@ -11,11 +11,16 @@ import smtplib
 import json
 import re
 import requests
+import time
+import sys
 import xml.etree.ElementTree as ET
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 CONFIG_FILE = 'config.json'
 
@@ -168,62 +173,71 @@ def navigate_folders(current_path):
             return selected_paths
 
 def main():
-    print_logo()
-    config = read_config()
+    clear_screen()  
+    
+    while True:  # Aggiungi un ciclo che continua fino a quando l'utente decide di uscire
+        config = read_config()
 
-    if not config['smtp_server'] or not config['smtp_port']:
-        print("Let's add a new address!")
-        while True:
-            config['username'] = input("Enter your email: ")
-            if is_valid_email(config['username']):
-                break
+        if not config['smtp_server'] or not config['smtp_port']:
+            print("Let's add a new address!")
+            while True:
+                config['username'] = input("Enter your email: ")
+                if is_valid_email(config['username']):
+                    break
+                else:
+                    print("Invalid email address. Please enter a valid one.")
+
+            config['password'] = input("Enter your password: ")
+            config['nickname'] = input("Enter your nickname for the sender's name (case sensitive): ")
+
+            smtp_info = get_smtp_info_autoconfig(config['username'])
+            if smtp_info:
+                print("SMTP Information:")
+                server = smtp_info[0]
+                print(f"Hostname: {server['hostname']}, Port: {server['port']}, Security: {server['security']}")
+                config['smtp_server'] = server['hostname']
+                config['smtp_port'] = server['port']
+                save_config(config)
             else:
-                print("Invalid email address. Please enter a valid one.")
+                print("SMTP information not found. You need to provide SMTP details manually.")
+                config['smtp_server'] = input("Enter your SMTP server address: ")
+                config['smtp_port'] = input("Enter your SMTP port: ")
+                save_config(config)
 
-        config['password'] = input("Enter your password: ")
-        config['nickname'] = input("Enter your nickname for the sender's name (case sensitive): ")
-
-        smtp_info = get_smtp_info_autoconfig(config['username'])
-        if smtp_info:
-            print("SMTP Information:")
-            server = smtp_info[0]
-            print(f"Hostname: {server['hostname']}, Port: {server['port']}, Security: {server['security']}")
-            config['smtp_server'] = server['hostname']
-            config['smtp_port'] = server['port']
-            save_config(config)
-        else:
-            print("SMTP information not found. You need to provide SMTP details manually.")
-            config['smtp_server'] = input("Enter your SMTP server address: ")
-            config['smtp_port'] = input("Enter your SMTP port: ")
-            save_config(config)
-
-    recipient = input("Enter the recipient's email address: ")
-    while not is_valid_email(recipient):
-        print("Invalid email address. Please enter a valid one.")
         recipient = input("Enter the recipient's email address: ")
+        while not is_valid_email(recipient):
+            print("Invalid email address. Please enter a valid one.")
+            recipient = input("Enter the recipient's email address: ")
 
-    subject = input("Enter the email subject: ")
-    body = input("Enter the email body: ")
+        subject = input("Enter the email subject: ")
+        body = input("Enter the email body: ")
 
-    attach_files = input("Do you want to attach any file? (yes/no): ").lower()
+        attach_files = input("Do you want to attach any file? (yes/no): ").lower()
 
-    attachments = []
+        attachments = []
 
-    if attach_files in ['yes', 'y']:
-        root_path = os.path.expanduser("~")
-        selected_files = navigate_folders(root_path)
-        attachments.extend(selected_files)
+        if attach_files in ['yes', 'y']:
+            root_path = os.path.expanduser("~")
+            selected_files = navigate_folders(root_path)
+            attachments.extend(selected_files)
 
-    if attachments:
-        print("Sending email with attachments...")
-    else:
-        print("Sending email...")
+        if attachments:
+            print("Sending email with attachments...")
+        else:
+            print("Sending email...")
 
-    send_email(config['nickname'], recipient, subject, body, attachments)
-    if attachments:
-        print("Email sent successfully with attachments!")
-    else:
-        print("Email sent successfully!")
+        send_email(config['nickname'], recipient, subject, body, attachments)
+        if attachments:
+            print("Email sent successfully with attachments!")
+        else:
+            print("Email sent successfully!")
+
+        time.sleep(5)  
+        clear_screen()  
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_logo()  # Stampa il logo ogni volta che viene pulito lo schermo
 
 def print_logo():
     logo = """
