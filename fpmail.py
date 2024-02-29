@@ -36,7 +36,7 @@ def get_smtp_info_autoconfig(email):
     domain = get_domain_from_email(email)
     if domain:
         url1 = f'https://autoconfig.thunderbird.net/v1.1/{domain}'
-        url2 = f'http://autoconfig.{domain}/mail/config-v1.1.xml?emailaddress={email}'
+        url2 = f'http://autoconfig.{domain}/mail/config-v1.1.xml?'
 
         urls = [url1, url2]
 
