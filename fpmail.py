@@ -36,7 +36,7 @@ def get_smtp_info_autoconfig(email):
     domain = get_domain_from_email(email)
     if domain:
         url1 = f'https://autoconfig.thunderbird.net/v1.1/{domain}'
-        url2 = f'http://autoconfig.{domain}/mail/config-v1.1.xml?'
+        url2 = f'http://autoconfig.{domain}/mail/config-v1.1.xml?emailaddress={email}'
 
         urls = [url1, url2]
 
@@ -232,8 +232,13 @@ def main():
         else:
             print("Email sent successfully!")
 
-        time.sleep(5)  
-        clear_screen()  
+        # Ask if the user wants to send another message
+        send_another = input("Do you want to send another message? (yes/no): ").lower()
+        if send_another in ['yes', 'y']:
+            clear_screen()
+        else:
+            print("Exiting...")
+            sys.exit()
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
