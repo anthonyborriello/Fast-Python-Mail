@@ -13,20 +13,11 @@ Fast Python Mail (fpmail) is a simple Python script designed to swiftly send ema
 
 ## Usage
 
-1. **Clone the repository:**
+1. **Download the Python file:**
     ```bash
-    sudo apt install git
+   wget https://raw.githubusercontent.com/anthonyborriello/Fast-Python-Mail/main/fpmail.py
     ```
-    ```bash
-    git clone https://github.com/anthonyborriello/Fast-Python-Mail.git
-    ```
-
-2. **Navigate to the project directory:**
-    ```bash
-    cd Fast-Python-Mail
-    ```
-
-4. **Run the script:**
+2. **Run the script:**
     ```bash
     python fpmail.py
     ```
