@@ -137,7 +137,7 @@ def navigate_folders(current_path):
     while True:
         print("\nCurrent path:", current_path)
         print("Folders and files available in the current directory:")
-        entries = os.listdir(current_path)
+        entries = sorted(os.listdir(current_path))  # Ordina gli elementi in ordine alfabetico
         for i, entry in enumerate(entries, 1):
             full_path = os.path.join(current_path, entry)
             if os.path.isdir(full_path):
@@ -145,12 +145,17 @@ def navigate_folders(current_path):
             else:
                 print(f"{i}. [File] {entry}")
         print("0. Go back")
-        choice = input("Enter the number of the folder or file to enter or 0 to go back: ")
+        print("a. Select all files in this folder")  # Nuova opzione per selezionare tutti i file
+
+        choice = input("Enter the number of the folder or file to enter, 0 to go back, or 'a' to select all files: ")
         if choice == '0':
             if current_path != os.path.expanduser("~"):
                 current_path = os.path.dirname(current_path)
             else:
                 print("Cannot go back from the home directory.")
+        elif choice == 'a':  # Se l'utente seleziona 'a', seleziona tutti i file
+            selected_paths = [os.path.join(current_path, entry) for entry in entries if os.path.isfile(os.path.join(current_path, entry))]
+            return selected_paths
         elif choice.isdigit() and 0 < int(choice) <= len(entries):
             selected_entry = entries[int(choice) - 1]
             full_path = os.path.join(current_path, selected_entry)
