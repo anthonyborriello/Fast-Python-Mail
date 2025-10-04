@@ -250,7 +250,7 @@ def clear_screen():
     print_logo()  # Stampa il logo ogni volta che viene pulito lo schermo
 
 def print_logo():
-    logo = """
+    logo = r"""
    __                       _ _
   / _|                     (_) |
  | |_ _ __  _ __ ___   __ _ _| |
@@ -259,7 +259,7 @@ def print_logo():
  |_| | .__/|_| |_| |_|\__,_|_|_|
      | |
      |_|
-    \n"""
+    """
     print(logo)
     print("""Send messages with attachments quickly and easily""")
 
