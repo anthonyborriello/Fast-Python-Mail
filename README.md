@@ -50,7 +50,7 @@ Once you've selected all desired files, press Enter to proceed.
 
 ## Author
 
-🇮🇹   Antonio Borriello - [Website](https://antonioborriello.wordpress.com)
+Antonio Borriello [antonioborriello.wordpress.com](https://antonioborriello.wordpress.com)
 
 ## License
 
